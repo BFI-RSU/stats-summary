@@ -126,7 +126,7 @@ uk_box_office <- function(return_type = "plot") {
 }
 
 
-uk_roi_box_office <- function() {
+uk_roi_box_office <- function(return_type = "plot") {
   df <- data_and_vars$data %>%
     filter(quarter == data_and_vars$latest_quarter) %>%
     filter(year >= data_and_vars$latest_year - 4 & year <= data_and_vars$latest_year) %>%
@@ -135,7 +135,27 @@ uk_roi_box_office <- function() {
     # Order labels chronologically using year + month_num
     mutate(label = factor(label, levels = label[order(year, month_num)]))
   
-  # Plot
+  if (return_type == "data") {
+    # Calculate values for text
+    latest <- df %>%
+      filter(year == data_and_vars$latest_year,
+             month == data_and_vars$latest_month) %>%
+      pull(uk_roi_box_office_m)
+    
+    prev_year <- df %>%
+      filter(year == data_and_vars$latest_year - 1,
+             month == data_and_vars$latest_month) %>%
+      pull(uk_roi_box_office_m)
+    
+    pct_change_prev <- round(((latest - prev_year) / prev_year) * 100)
+    
+    return(list(
+      current = latest,
+      pct_change_prev = pct_change_prev
+    ))
+  }
+
+  # Return plot (default)
   ggplot(df, aes(x = label, y = uk_roi_box_office_m)) +
     geom_bar(stat = 'identity', fill = '#783df6') +  
     geom_text(aes(label = scales::comma(uk_roi_box_office_m)), vjust = 1.5, color = 'white') + 
@@ -321,13 +341,26 @@ uk_admissions <- function(return_type = "plot") {
 }
 
 
-uk_admissions_month <- function() {
+uk_admissions_month <- function(return_type = "plot") {
   df <- data_and_vars$data %>%
     mutate(
       month = factor(month, levels = month.name),
       color = ifelse(year == data_and_vars$latest_year, "#e50076", "#D3D3D3")
     )
 
+  if (return_type == "data") {
+    # Calculate values for text
+    latest_year_data <- df %>%
+      filter(year == data_and_vars$latest_year) %>%
+      slice_max(admissions_m, n = 1)
+
+    return(list(
+      max_month = pull(latest_year_data, month),
+      max_month_admissions = pull(latest_year_data, admissions_m)
+    ))
+  }  
+
+  # Return plot (default)
   ggplot(df, aes(x = month, y = admissions_m, group = year, color = factor(year))) +
     geom_line(aes(color = color), size = 1) +
     geom_point(aes(color = color), size = 2) +

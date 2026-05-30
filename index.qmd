@@ -45,7 +45,7 @@ box_office_data <- uk_box_office(return_type = "data")
 
 In the UK in the period January to `r data_and_vars$latest_month` (`r data_and_vars$latest_period`) `r data_and_vars$latest_year`:
 
-* Box office revenue was £`r scales::comma(round(box_office_data$current))` million, `r ifelse(box_office_data$pct_change_prev >= 0, "up", "down")` `r abs(box_office_data$pct_change_prev)`% on `r data_and_vars$latest_year - 1`.
+* Box office revenue was £`r scales::comma(round(box_office_data$current))` million, `r ifelse(box_office_data$pct_change_prev >= 0, "up", "down")` `r abs(box_office_data$pct_change_prev)`% on `r data_and_vars$latest_period` `r data_and_vars$latest_year - 1`.
 
 </div>
 
@@ -75,7 +75,7 @@ uk_admissions_data <- uk_admissions(return_type = "data")
 
 <div id="left">
 
-* There were `r scales::comma(round(uk_admissions_data$current))` million cinema admissions, `r ifelse(uk_admissions_data$pct_change_prev >= 0, "up", "down")` `r abs(uk_admissions_data$pct_change_prev)`% on `r data_and_vars$latest_year - 1`.
+* There were `r scales::comma(round(uk_admissions_data$current))` million cinema admissions, `r ifelse(uk_admissions_data$pct_change_prev >= 0, "up", "down")` `r abs(uk_admissions_data$pct_change_prev)`% on `r data_and_vars$latest_period` `r data_and_vars$latest_year - 1`.
 * Figures are for all films on release, including event releases and those that started their release prior to the `r data_and_vars$latest_period` period.
 
 </div>
@@ -93,12 +93,20 @@ uk_admissions()
 ```
 </div>
 
-## 
+##
+
+```{r}
+#| label: uk-admissions-month-text
+
+sheet_name <- 'uk_admissions'
+data_and_vars <- load_data(file_path, sheet_name, type)
+uk_admissions_month_data <- uk_admissions_month(return_type = "data")
+```
 
 <div id="left">
 
-* July recorded 2025's highest monthly admissions, at 13 million.
-* *Jurassic World Rebirth* and *Superman* were the highest earning releases of that month.
+* `r uk_admissions_month_data$max_month` recorded `r data_and_vars$latest_period` `r data_and_vars$latest_year`'s highest monthly admissions, at `r round(uk_admissions_month_data$max_month_admissions, 0)` million.
+* *The Housemaid*, *Avatar: Fire & Ash* and *Hamnet* were the highest earning releases of that month.
 
 </div>
 
@@ -120,11 +128,19 @@ uk_admissions_month()
 
 ##
 
+```{r}
+#| label: uk-roi-box-office-text
+
+sheet_name <- 'uk_roi_box_office'
+data_and_vars <- load_data(file_path, sheet_name, type)
+uk_roi_box_office_data = uk_roi_box_office(return_type = 'data')
+```
+
 <div id="left">
 
 At the UK and Republic of Ireland (ROI) box office:
 
-* Revenue for films released in `r data_and_vars$latest_period` `r data_and_vars$latest_year` was £1.0 billion, unchanged from 2024 and down 21% on 2019.
+* Revenue for films released in `r data_and_vars$latest_period` `r data_and_vars$latest_year` was £`r round(uk_roi_box_office_data$current, 0)` million, `r ifelse(uk_roi_box_office_data$pct_change_prev >= 0, "up", "down")` `r abs(uk_roi_box_office_data$pct_change_prev)`% on `r data_and_vars$latest_period` `r data_and_vars$latest_year - 1`.
 * This excludes event releases.
 
 </div>
@@ -138,36 +154,10 @@ At the UK and Republic of Ireland (ROI) box office:
 #| fig-align: center
 #| fig-dpi: 150
 
-sheet_name <- 'uk_roi_box_office'
-data_and_vars <- load_data(file_path, sheet_name, type)
 uk_roi_box_office()
 ```
 
 </div>
-
-```{r}
-#| label: uk-market-share
-#| fig-width: 8
-#| fig-height: 6
-#| fig-align: center
-#| fig-dpi: 150
-#| eval: false
-
-sheet_name <- 'uk_film_share'
-df <- load_data(file_path, sheet_name)
-uk_market_share()
-```
-
-```{r}
-#| label: uk-market-share-indie
-#| fig-width: 8
-#| fig-height: 6
-#| fig-align: center
-#| fig-dpi: 150
-#| eval: false
-
-uk_market_share_indie()
-```
 
 ##
 
