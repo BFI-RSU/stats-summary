@@ -1,5 +1,5 @@
 ---
-title: BFI screen sector statistics to December 2025
+title: BFI screen sector statistics to March 2026
 author: Brian Tarran
 date: last-modified
 date-format: long
@@ -45,7 +45,7 @@ box_office_data <- uk_box_office(return_type = "data")
 
 In the UK in the period January to `r data_and_vars$latest_month` (`r data_and_vars$latest_period`) `r data_and_vars$latest_year`:
 
-* Box office revenue was £`r scales::comma(round(box_office_data$current))` million, `r ifelse(box_office_data$pct_change_prev >= 0, "up", "down")` `r abs(box_office_data$pct_change_prev)`% on `r data_and_vars$latest_year - 1` and `r ifelse(box_office_data$pct_change_2019 >= 0, "up", "down")` `r abs(box_office_data$pct_change_2019)`% on 2019.
+* Box office revenue was £`r scales::comma(round(box_office_data$current))` million, `r ifelse(box_office_data$pct_change_prev >= 0, "up", "down")` `r abs(box_office_data$pct_change_prev)`% on `r data_and_vars$latest_year - 1`.
 
 </div>
 
@@ -75,7 +75,7 @@ uk_admissions_data <- uk_admissions(return_type = "data")
 
 <div id="left">
 
-* There were `r scales::comma(round(uk_admissions_data$current))` million cinema admissions, `r ifelse(uk_admissions_data$pct_change_prev >= 0, "up", "down")` `r abs(uk_admissions_data$pct_change_prev)`% on `r data_and_vars$latest_year - 1` and `r ifelse(uk_admissions_data$pct_change_2019 >= 0, "up", "down")` `r abs(uk_admissions_data$pct_change_2019)`% on 2019.
+* There were `r scales::comma(round(uk_admissions_data$current))` million cinema admissions, `r ifelse(uk_admissions_data$pct_change_prev >= 0, "up", "down")` `r abs(uk_admissions_data$pct_change_prev)`% on `r data_and_vars$latest_year - 1`.
 * Figures are for all films on release, including event releases and those that started their release prior to the `r data_and_vars$latest_period` period.
 
 </div>

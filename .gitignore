@@ -2,3 +2,5 @@
 /data/
 /_site/
 /.vscode/
+
+**/*.quarto_ipynb

@@ -81,7 +81,7 @@ load_data <- function(file_path, sheet_name, type = c("boxoffice", "production")
 uk_box_office <- function(return_type = "plot") {
   df <- data_and_vars$data %>%
     filter(quarter == data_and_vars$latest_quarter) %>%
-    filter(year >= data_and_vars$latest_year - 6 & year <= data_and_vars$latest_year) %>%
+    filter(year >= data_and_vars$latest_year - 4 & year <= data_and_vars$latest_year) %>%
     group_by(year, label) %>%
     ungroup() %>%
     # Order labels chronologically using year + month_num
@@ -101,19 +101,11 @@ uk_box_office <- function(return_type = "plot") {
       summarise(revenue = sum(uk_box_office_m, na.rm = TRUE)) %>%
       pull(revenue)
     
-    year_2019 <- df %>%
-      filter(year == 2019,
-             month == data_and_vars$latest_month) %>%
-      summarise(revenue = sum(uk_box_office_m, na.rm = TRUE)) %>%
-      pull(revenue)
-    
     pct_change_prev <- round(((latest - prev_year) / prev_year) * 100)
-    pct_change_2019 <- round(((latest - year_2019) / year_2019) * 100)
     
     return(list(
       current = latest,
-      pct_change_prev = pct_change_prev,
-      pct_change_2019 = pct_change_2019
+      pct_change_prev = pct_change_prev
     ))
   }
   
@@ -137,7 +129,7 @@ uk_box_office <- function(return_type = "plot") {
 uk_roi_box_office <- function() {
   df <- data_and_vars$data %>%
     filter(quarter == data_and_vars$latest_quarter) %>%
-    filter(year >= data_and_vars$latest_year - 6 & year <= data_and_vars$latest_year) %>%
+    filter(year >= data_and_vars$latest_year - 4 & year <= data_and_vars$latest_year) %>%
     group_by(year, label) %>%
     ungroup() %>%
     # Order labels chronologically using year + month_num
@@ -207,10 +199,10 @@ uk_market_share_indie <- function() {
     geom_bar(aes(fill = ifelse(film_type == "all_uk_qualifying", "all_uk_qualifying", NA)), 
              stat = 'identity', position = 'identity', na.rm = TRUE) + 
     # Third layer: uk independent films (overlaid)
-    geom_bar(aes(fill = ifelse(film_type == "uk_independent", "uk_independent", NA)), 
+    geom_bar(aes(fill = ifelse(film_type == "uk_qualifying_independent", "uk_qualifying_independent", NA)), 
              stat = 'identity', position = 'identity', na.rm = TRUE) + 
     # Text labels for relevant bars
-    geom_text(data = df_filtered %>% filter(film_type == "uk_independent"), 
+    geom_text(data = df_filtered %>% filter(film_type == "uk_qualifying_independent"), 
               aes(label = scales::comma(round(box_office_m, 0)), vjust = -0.5),
               color = '#e50076') +
     labs(
@@ -223,7 +215,7 @@ uk_market_share_indie <- function() {
     scale_y_continuous(labels = scales::comma_format()) +
     scale_fill_manual(values = c('all_titles' = 'grey', 
                                  'all_uk_qualifying' = 'lightgrey',
-                                 'uk_independent' = '#e50076'), 
+                                 'uk_qualifying_independent' = '#e50076'), 
                       na.value = "transparent") + 
     theme_minimal() +
     theme(
@@ -236,24 +228,24 @@ uk_market_share_indie <- function() {
 uk_market_share_percent <- function() {
   df <- data_and_vars$data %>%
     filter(quarter == data_and_vars$latest_quarter) %>%
-    filter(year >= data_and_vars$latest_year - 6 & year <= data_and_vars$latest_year) %>%
+    filter(year >= data_and_vars$latest_year - 4 & year <= data_and_vars$latest_year) %>%
     group_by(year, label) %>%
     ungroup() %>%
     # Order labels chronologically using year + month_num, removing duplicates
     mutate(label = factor(label, levels = unique(label[order(year, month_num)])))
 
-  df$film_type <- factor(df$film_type, levels = c("other_uk_qualifying", "uk_independent"))
+  df$film_type <- factor(df$film_type, levels = c("other_uk_qualifying", "uk_qualifying_independent"))
 
   ggplot(df, aes(x = label, y = market_share_percent)) +
     # Layer 1: All films (no stacking)
     geom_bar(aes(fill = "all_titles"), 
              stat = 'identity', position = 'identity', na.rm = TRUE) +
-    # Layer 2: Stacked bars for uk_independent and other_uk_qualifying (stacked on top of all_titles)
-    geom_bar(data = df %>% filter(film_type %in% c("other_uk_qualifying", "uk_independent")), 
+    # Layer 2: Stacked bars for uk_qualifying_independent and other_uk_qualifying (stacked on top of all_titles)
+    geom_bar(data = df %>% filter(film_type %in% c("other_uk_qualifying", "uk_qualifying_independent")), 
              aes(fill = film_type), 
              stat = 'identity', position = 'stack', na.rm = TRUE) + 
-    # Text labels for relevant bars (only for uk_independent and other_uk_qualifying)
-    geom_text(data = df %>% filter(film_type %in% c("other_uk_qualifying", "uk_independent")), 
+    # Text labels for relevant bars (only for uk_qualifying_independent and other_uk_qualifying)
+    geom_text(data = df %>% filter(film_type %in% c("other_uk_qualifying", "uk_qualifying_independent")), 
               aes(label = scales::comma(round(market_share_percent, 0))), 
               position = position_stack(vjust = 0.5),
               color = 'white') +
@@ -268,7 +260,7 @@ uk_market_share_percent <- function() {
     scale_y_continuous(labels = function(x) paste0(x, "%")) +
     scale_fill_manual(values = c('all_titles' = 'grey', 
                                  'other_uk_qualifying' = '#1197FF',
-                                 'uk_independent' = '#e50076'), 
+                                 'uk_qualifying_independent' = '#e50076'), 
                       na.value = "transparent") + 
     theme_minimal() +
     theme(
@@ -283,6 +275,7 @@ uk_market_share_percent <- function() {
 uk_admissions <- function(return_type = "plot") {
   df <- data_and_vars$data %>%
     filter(quarter <= data_and_vars$latest_quarter) %>%
+    filter(year >= data_and_vars$latest_year - 4 & year <= data_and_vars$latest_year) %>%
     group_by(year, label) %>%
     summarise(
       admissions_m = sum(admissions_m, na.rm = TRUE),
@@ -303,17 +296,11 @@ uk_admissions <- function(return_type = "plot") {
       filter(year == data_and_vars$latest_year - 1) %>%
       pull(admissions_m)
     
-    year_2019 <- df %>%
-      filter(year == 2019) %>%
-      pull(admissions_m)
-    
     pct_change_prev <- round(((latest - prev_year) / prev_year) * 100)
-    pct_change_2019 <- round(((latest - year_2019) / year_2019) * 100)
-    
+
     return(list(
       current = latest,
-      pct_change_prev = pct_change_prev,
-      pct_change_2019 = pct_change_2019
+      pct_change_prev = pct_change_prev
     ))
   }
   
