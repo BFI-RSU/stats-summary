@@ -245,7 +245,7 @@ uk_market_share_indie <- function() {
 }
 
 
-uk_market_share_percent <- function() {
+uk_market_share_percent <- function(return_type = "plot") {
   df <- data_and_vars$data %>%
     filter(quarter == data_and_vars$latest_quarter) %>%
     filter(year >= data_and_vars$latest_year - 4 & year <= data_and_vars$latest_year) %>%
@@ -254,8 +254,45 @@ uk_market_share_percent <- function() {
     # Order labels chronologically using year + month_num, removing duplicates
     mutate(label = factor(label, levels = unique(label[order(year, month_num)])))
 
+  if (return_type == "data") {
+    # Calculate values for text
+    uk_indie_latest <- df %>%
+      filter(year == data_and_vars$latest_year,
+             month == data_and_vars$latest_month) %>%
+      filter(film_type == "uk_qualifying_independent") %>%
+      pull(market_share_percent)
+
+    other_uk_qualifying_latest <- df %>%
+      filter(year == data_and_vars$latest_year,
+             month == data_and_vars$latest_month) %>%
+      filter(film_type == "other_uk_qualifying") %>%
+      pull(market_share_percent)
+
+    all_uk_qualifying_latest <- df %>%
+      filter(year == data_and_vars$latest_year,
+             month == data_and_vars$latest_month) %>%
+      filter(film_type == "all_uk_qualifying") %>%
+      pull(market_share_percent)
+    
+    all_uk_qualifying_prev_year <- df %>%
+      filter(year == data_and_vars$latest_year - 1,
+             month == data_and_vars$latest_month) %>%
+      filter(film_type == "all_uk_qualifying") %>%
+      pull(market_share_percent)
+    
+    all_pt_change_prev <- round(all_uk_qualifying_latest - all_uk_qualifying_prev_year)
+    
+    return(list(
+      uk_indie = uk_indie_latest,
+      other_uk_qualifying = other_uk_qualifying_latest,
+      all_uk_qualifying = all_uk_qualifying_latest,
+      all_pt_change_prev = all_pt_change_prev
+    ))
+  }
+
   df$film_type <- factor(df$film_type, levels = c("other_uk_qualifying", "uk_qualifying_independent"))
 
+  # Return plot (default)
   ggplot(df, aes(x = label, y = market_share_percent)) +
     # Layer 1: All films (no stacking)
     geom_bar(aes(fill = "all_titles"), 
@@ -272,7 +309,7 @@ uk_market_share_percent <- function() {
     labs(
       title = paste0('Share of UK and Republic of Ireland box office, January to ', data_and_vars$latest_month, ' (', 
                       data_and_vars$latest_period, ')'),
-      subtitle = "For <span style='color:#e50076'>**all UK independent films**</span> 
+      subtitle = "For <span style='color:#e50076'>**UK qualifying independent films**</span> 
                   and <span style='color:#1197FF'>**other UK qualifying films**</span>",
       x = '',
       y = '',
@@ -385,7 +422,7 @@ uk_admissions_month <- function(return_type = "plot") {
 
 # Production
 
-all_production_first <- function() {
+all_production_first <- function(return_type = "plot") {
   # Mappings
   metric_display_names <- c(
     UK_spend_m = "spend, £ million",
@@ -424,6 +461,26 @@ all_production_first <- function() {
     summarise(total_metric = sum(.data[[metric]], na.rm = TRUE)) %>%
     ungroup()
 
+  if (return_type == "data") {
+    # Calculate values for text
+    total_first_latest <- df_total_first %>%
+      slice_tail(n = 1) %>%
+      pull(total_metric)
+
+    total_first_prev <- df_total_first %>%
+      slice_tail(n = 2) %>%
+      slice_head(n = 1) %>%
+      pull(total_metric)
+    
+    total_first_pct_change_prev <- round(((total_first_latest - total_first_prev) / total_first_prev) * 100)
+
+    return(list(
+      total_first_latest = round(total_first_latest/1000, 2),
+      total_first_pct_change_prev = total_first_pct_change_prev
+    ))
+  }  
+
+  # Return plot (default)
   ggplot(df_total_revised, aes(x = label, y = total_metric)) +
     geom_bar(stat = 'identity', fill = 'grey', alpha = 0) +
     geom_text(aes(label = scales::comma(round(total_metric, 0))),
@@ -447,7 +504,7 @@ all_production_first <- function() {
 }
 
 
-all_production_revised <- function() {
+all_production_revised <- function(return_type = "plot") {
   # Mappings
   metric_display_names <- c(
     UK_spend_m = "spend, £ million",
@@ -486,6 +543,26 @@ all_production_revised <- function() {
     summarise(total_metric = sum(.data[[metric]], na.rm = TRUE)) %>%
     ungroup()
 
+  if (return_type == "data") {
+    # Calculate values for text
+    total_revised_latest <- df_total_revised %>%
+      slice_tail(n = 1) %>%
+      pull(total_metric)
+
+    total_revised_prev <- df_total_revised %>%
+      slice_tail(n = 2) %>%
+      slice_head(n = 1) %>%
+      pull(total_metric)
+    
+    total_revised_pct_change_prev <- round(((total_revised_latest - total_revised_prev) / total_revised_prev) * 100)
+
+    return(list(
+      total_revised_latest = round(total_revised_latest/1000, 2),
+      total_revised_pct_change_prev = total_revised_pct_change_prev
+    ))
+  }  
+
+  # Return plot (default)
   ggplot(df_total_revised, aes(x = label, y = total_metric)) +
     geom_bar(stat = 'identity', fill = 'darkgrey') +  
     # Add total spend labels for each year at the top of the stacked bars

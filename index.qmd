@@ -161,9 +161,17 @@ uk_roi_box_office()
 
 ##
 
+```{r}
+#| label: uk-market-share-percent-text
+
+sheet_name <- 'uk_film_share'
+data_and_vars <- load_data(file_path, sheet_name, type)
+uk_market_share_percent_data = uk_market_share_percent(return_type = 'data')
+```
+
 <div id="left">
 
-* The total market share of all UK qualifying films was 40.5%, almost 1 percentage point higher than 2024’s UK qualifying share.
+* The total market share of all UK qualifying films was `r uk_market_share_percent_data$all_uk_qualifying`%, approximately `r abs(uk_market_share_percent_data$all_pt_change_prev)` percentage `r ifelse(uk_market_share_percent_data$all_pt_change_prev > 1, "points", "point")` `r ifelse(uk_market_share_percent_data$all_pt_change_prev >= 0, "higher", "down")` than `r data_and_vars$latest_period` `r data_and_vars$latest_year - 1`’s UK qualifying share.
 <!-- * *Note*: 2025 figures in chart sum to 44% due to rounding. -->
 
 </div>
@@ -177,8 +185,6 @@ uk_roi_box_office()
 #| fig-align: center
 #| fig-dpi: 150
 
-sheet_name <- 'uk_film_share'
-data_and_vars <- load_data(file_path, sheet_name, type)
 uk_market_share_percent()
 ```
 
@@ -193,6 +199,9 @@ sheet_name <- 'uk_production_detail'
 type <- 'production'
 data_and_vars <- load_data(file_path, sheet_name, type)
 metric <- 'UK_spend_m'
+
+all_production_first_data = all_production_first(return_type = 'data')
+
 ```
 
 ##
@@ -201,7 +210,7 @@ metric <- 'UK_spend_m'
 
 In the UK, in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`: 
 
-* The combined total spend on film and high-end television (HETV) production was £6.8 billion.
+* The combined total spend on film and high-end television (HETV) production was £`r all_production_first_data$total_first` billion, `r ifelse(all_production_first_data$total_first_pct_change_prev >=0, "up", "down")` `r abs(round(all_production_first_data$total_first_pct_change_prev))`% on the previous 12-month period.
 * This graph shows the figures that were 'first reported' for production spend in each 12-month period. 
 
 </div>
@@ -222,10 +231,16 @@ all_production_first()
 
 ##
 
+```{r}
+#| label: all-production-revised-text
+
+all_production_revised_data = all_production_revised(return_type = 'data')
+```
+
 <div id="left">
 
 * Production data is revised every period to account for lags in obtaining complete data across all types of productions.
-* Combined spend for the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` was up 13% on revised figures for the previous 12-month period.
+* Combined spend for the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` was `r ifelse(all_production_revised_data$total_revised_pct_change_prev >=0, "up", "down")` `r abs(round(all_production_revised_data$total_revised_pct_change_prev))`% on revised figures for the previous 12-month period.
 
 </div>
 
