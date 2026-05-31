@@ -800,7 +800,7 @@ production_breakdown_revised <- function() {
   category_display_names <- c(
     film = "Film",
     hetv = "HETV"
-)
+  )
   
   category_colours <- c(
     film = "#e50076",
@@ -897,7 +897,7 @@ production_breakdown_revised <- function() {
 
 # Certification
 
-certification <- function() {
+certification <- function(return_type = "plot") {
   # Mappings
   metric_display_names <- c(
     uk_spend_m = "UK spend, £ million",
@@ -954,6 +954,28 @@ certification <- function() {
       y_pos = total_height + 0.02 * max(total_height)  # add a small offset above the bar
     )
 
+  if (return_type == "data") {
+    # Calculate values for text
+    latest <- df_filtered %>%
+      filter(year == data_and_vars$latest_year) %>%
+      summarise(total = sum(.data[[metric]], na.rm = TRUE)) %>%
+      pull(total)
+
+    prev_year <- df_filtered %>%
+      filter(year == data_and_vars$latest_year - 1) %>%
+      summarise(total = sum(.data[[metric]], na.rm = TRUE)) %>%
+      pull(total)
+
+    pct_change_prev <- round(((latest - prev_year) / prev_year) * 100)
+
+    return(list(
+      latest = round(latest / 1000, 2),
+      latest_unrounded = latest,
+      pct_change_prev = pct_change_prev
+    ))
+  }
+
+  # Return plot (default)
   ggplot(df_filtered, aes(x = label, y = .data[[metric]], fill = cert_type)) +
     geom_bar(stat = "identity", position = "stack") +
 

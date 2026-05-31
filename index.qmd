@@ -607,11 +607,20 @@ data_and_vars <- load_data(file_path, sheet_name, type)
 
 ##
 
+```{r}
+#| label: film-cert-final-count-text
+
+category_select <- 'film'
+cert_status_select <- 'final'
+metric <- 'count'
+film_cert_data = certification(return_type = 'data')
+```
+
 <div id="left">
 
 In the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`:
 
-* A total of 613 films received final certification, either under the cultural test or as an official co-production.
+* A total of `r film_cert_data$latest_unrounded` films received final certification, either under the cultural test or as an official co-production.
 * Certification is required to access UK tax reliefs and credits for audiovisual and video game expenditure.
 
 </div>
@@ -625,9 +634,6 @@ In the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`
 #| fig-align: center
 #| fig-dpi: 150
 
-category_select <- 'film'
-cert_status_select <- 'final'
-metric <- 'count'
 certification()
 ```
 
@@ -635,9 +641,18 @@ certification()
 
 ##
 
+```{r}
+#| label: film-cert-final-spend-text
+
+category_select <- 'film'
+cert_status_select <- 'final'
+metric <- 'uk_spend_m'
+film_cert_data = certification(return_type = 'data')
+```
+
 <div id="left">
 
-* Films achieving final certification in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` had an associated UK production spend of £2.4 billion.
+* Films achieving final certification in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` had an associated UK production spend of £`r film_cert_data$latest` billion.
 * Films and other productions can apply for final certification when they have completed production and are ready to be released.
 
 </div>
@@ -651,9 +666,6 @@ certification()
 #| fig-align: center
 #| fig-dpi: 150
 
-category_select <- 'film'
-cert_status_select <- 'final'
-metric <- 'uk_spend_m'
 certification()
 ```
 
@@ -661,9 +673,22 @@ certification()
 
 ##
 
+```{r}
+#| label: hetv-cert-final-count-text
+#| fig-width: 8
+#| fig-height: 6
+#| fig-align: center
+#| fig-dpi: 150
+
+category_select <- 'hetv'
+cert_status_select <- 'final'
+metric <- 'count'
+hetv_cert_data = certification(return_type = 'data')
+```
+
 <div id="left">
 
-* 248 HETV titles received final certification through the cultural test in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
+* `r hetv_cert_data$latest_unrounded` HETV titles received final certification through the cultural test in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
 * There were two co-productions with final certification but details are not included for disclosure control reasons.
 
 </div>
@@ -677,9 +702,6 @@ certification()
 #| fig-align: center
 #| fig-dpi: 150
 
-category_select <- 'hetv'
-cert_status_select <- 'final'
-metric <- 'count'
 certification()
 ```
 
@@ -687,9 +709,22 @@ certification()
 
 ##
 
+```{r}
+#| label: hetv-cert-final-spend-text
+#| fig-width: 8
+#| fig-height: 6
+#| fig-align: center
+#| fig-dpi: 150
+
+category_select <- 'hetv'
+cert_status_select <- 'final'
+metric <- 'uk_spend_m'
+hetv_cert_data = certification(return_type = 'data')
+```
+
 <div id="left">
 
-* HETV productions receiving final certification under the cultural test in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` had a UK production spend of £4.3 billion.
+* HETV productions receiving final certification under the cultural test in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` had a UK production spend of £`r hetv_cert_data$latest` billion.
 
 </div>
 
@@ -702,9 +737,6 @@ certification()
 #| fig-align: center
 #| fig-dpi: 150
 
-category_select <- 'hetv'
-cert_status_select <- 'final'
-metric <- 'uk_spend_m'
 certification()
 ```
 
@@ -712,9 +744,22 @@ certification()
 
 ##
 
+```{r}
+#| label: animation-cert-final-count-text
+#| fig-width: 8
+#| fig-height: 6
+#| fig-align: center
+#| fig-dpi: 150
+
+category_select <- 'animation_tv'
+cert_status_select <- 'final'
+metric <- 'count'
+anm_cert_data = certification(return_type = 'data')
+```
+
 <div id="left">
 
-* 74 animation television programmes received final certification under the cultural test in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
+* `r anm_cert_data$latest_unrounded` animation television programmes received final certification under the cultural test in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
 * There were two co-productions with final certification but details are not included for disclosure control reasons.
 
 </div>
@@ -728,9 +773,6 @@ certification()
 #| fig-align: center
 #| fig-dpi: 150
 
-category_select <- 'animation_tv'
-cert_status_select <- 'final'
-metric <- 'count'
 certification()
 ```
 
@@ -738,9 +780,18 @@ certification()
 
 ##
 
+```{r}
+#| label: animation-cert-final-spend-text
+
+category_select <- 'animation_tv'
+cert_status_select <- 'final'
+metric <- 'uk_spend_m'
+anm_cert_data = certification(return_type = 'data')
+```
+
 <div id="left">
 
-* Animation TV productions receiving final certification under the cultural test in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` had a UK production spend of £201 million.
+* Animation TV productions receiving final certification under the cultural test in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` had a UK production spend of £`r anm_cert_data$latest_unrounded` million.
 
 </div>
 
@@ -753,9 +804,6 @@ certification()
 #| fig-align: center
 #| fig-dpi: 150
 
-category_select <- 'animation_tv'
-cert_status_select <- 'final'
-metric <- 'uk_spend_m'
 certification()
 ```
 
@@ -763,10 +811,19 @@ certification()
 
 ##
 
+```{r}
+#| label: childrens-cert-final-count-text
+
+category_select <- 'childrens_tv'
+cert_status_select <- 'final'
+metric <- 'count'
+ctv_cert_data = certification(return_type = 'data')
+```
+
 <div id="left">
 
-* 86 children’s television programmes received final certification under the cultural test in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
-* There were two co-productions with final certification but details are not included for disclosure control reasons.
+* `r ctv_cert_data$latest_unrounded` children’s television programmes received final certification under the cultural test in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
+* There was one co-production with final certification but details are not included for disclosure control reasons.
 
 </div>
 
@@ -779,9 +836,6 @@ certification()
 #| fig-align: center
 #| fig-dpi: 150
 
-category_select <- 'childrens_tv'
-cert_status_select <- 'final'
-metric <- 'count'
 certification()
 ```
 
@@ -789,9 +843,18 @@ certification()
 
 ##
 
+```{r}
+#| label: childrens-cert-final-spend-text
+
+category_select <- 'childrens_tv'
+cert_status_select <- 'final'
+metric <- 'uk_spend_m'
+ctv_cert_data = certification(return_type = 'data')
+```
+
 <div id="left">
 
-* Children's TV productions receiving final certification under the cultural test in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` had a UK production spend of £199 million.
+* Children's TV productions receiving final certification under the cultural test in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` had a UK production spend of £`r ctv_cert_data$latest_unrounded` million.
 
 </div>
 
@@ -804,9 +867,6 @@ certification()
 #| fig-align: center
 #| fig-dpi: 150
 
-category_select <- 'childrens_tv'
-cert_status_select <- 'final'
-metric <- 'uk_spend_m'
 certification()
 ```
 
@@ -814,9 +874,18 @@ certification()
 
 ##
 
+```{r}
+#| label: video-games-cert-final-count-text
+
+category_select <- 'video_games'
+cert_status_select <- 'final'
+metric <- 'count'
+vg_cert_data = certification(return_type = 'data')
+```
+
 <div id="left">
 
-* 273 video games received final certification in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
+* `r vg_cert_data$latest_unrounded` video games received final certification in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
 * Video games can only be certified under the cultural test.
 
 </div>
@@ -830,9 +899,6 @@ certification()
 #| fig-align: center
 #| fig-dpi: 150
 
-category_select <- 'video_games'
-cert_status_select <- 'final'
-metric <- 'count'
 certification()
 ```
 
@@ -840,10 +906,19 @@ certification()
 
 ##
 
+```{r}
+#| label: video-games-cert-final-spend-text
+
+category_select <- 'video_games'
+cert_status_select <- 'final'
+metric <- 'uk_spend_m'
+vg_cert_data = certification(return_type = 'data')
+```
+
 <div id="left">
 
-* Video games receiving final certification in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` had a UK production spend of £618 million.
-* This is the third highest UK spend figure on record.
+* Video games receiving final certification in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` had a UK production spend of £`r vg_cert_data$latest` billion.
+* This is the highest UK spend figure on record.
 
 </div>
 
@@ -856,9 +931,6 @@ certification()
 #| fig-align: center
 #| fig-dpi: 150
 
-category_select <- 'video_games'
-cert_status_select <- 'final'
-metric <- 'uk_spend_m'
 certification()
 ```
 
