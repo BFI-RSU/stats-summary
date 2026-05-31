@@ -260,9 +260,15 @@ all_production_revised()
 
 ##
 
+```{r}
+#| label: film-hetv-production-revised-text
+
+film_hetv_production_revised_data = film_hetv_production_revised(return_type = 'data')
+```
+
 <div id="left">
 
-* HETV accounted for 59% of UK production spend in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
+* HETV accounted for `r film_hetv_production_revised_data$hetv_percent`% of UK production spend in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
 
 </div>
 
@@ -280,22 +286,18 @@ film_hetv_production_revised()
 
 </div>
 
-```{r}
-#| label: film-hetv-production-revised-percentage
-#| fig-width: 8
-#| fig-height: 6
-#| fig-align: center
-#| fig-dpi: 150
-#| eval: false
-
-film_hetv_production_revised_percentage()
-```
-
 ##
+
+```{r}
+#| label: film-production-revised-text
+
+category_select <- 'film'
+film_production_data = production_revised(return_type = 'data')
+```
 
 <div id="left">
 
-* UK spend on film production was £2.8 billion, up 23% compared with revised figures for the 12 months ending `r data_and_vars$latest_month` `r data_and_vars$latest_year - 1`.
+* UK spend on film production was £`r film_production_data$latest` billion, `r ifelse(film_production_data$pct_change_prev >= 0, "up", "down")` `r abs(film_production_data$pct_change_prev)`% compared with revised figures for the 12 months ending `r data_and_vars$latest_month` `r data_and_vars$latest_year - 1`.
 
 </div>
 
@@ -345,9 +347,16 @@ production_breakdown_revised()
 
 ##
 
+```{r}
+#| label: hetv-production-revised-text
+
+category_select <- 'hetv'
+hetv_production_data = production_revised(return_type = 'data')
+```
+
 <div id="left">
 
-* UK spend on HETV projects was £4.0 billion in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`, up 7% on revised figures for the previous 12-month period.
+* UK spend on HETV projects was £`r hetv_production_data$latest` billion in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`, `r ifelse(hetv_production_data$pct_change_prev >= 0, "up", "down")` `r abs(hetv_production_data$pct_change_prev)`% on revised figures for the previous 12-month period.
 
 </div>
 
@@ -360,7 +369,6 @@ production_breakdown_revised()
 #| fig-align: center
 #| fig-dpi: 150
 
-category_select <- 'hetv'
 production_revised()
 ```
 
@@ -370,7 +378,7 @@ production_revised()
 
 <div id="left">
 
-* Spend on all categories of production increased compared with revised figures for the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year - 1`.
+* Spend on co-productions almost doubled compared with revised figures for the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year - 1`.
 <!-- * *Note:* INW and COP spend is combined for the 12 months to September 2021 for reasons of disclosure control.  -->
 
 </div>
@@ -402,11 +410,17 @@ metric <- 'count'
 
 ##
 
+```{r}
+#| label: all-production-count-first-text
+
+all_production_first_data = all_production_first(return_type = 'data')
+```
+
 <div id="left">
 
 In the UK, in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`:
 
-* Combined production starts were down 3% on first reported figures for the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year - 1`.
+* Combined production starts were `r ifelse(all_production_first_data$total_first_pct_change_prev >= 0, "up", "down")` `r abs(all_production_first_data$total_first_pct_change_prev)`% on first reported figures for the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year - 1`.
 
 </div>
 
@@ -448,9 +462,15 @@ all_production_revised()
 
 ##
 
+```{r}
+#| label: film-hetv-production-count-revised-text
+
+film_hetv_production_revised_data = film_hetv_production_revised(return_type = 'data')
+```
+
 <div id="left">
 
-* We saw earlier that HETV accounted for the majority of UK production spend in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`. In terms of number of productions, however, film accounted for the majority: 53%.
+* We saw earlier that HETV accounted for the majority of UK production spend in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`. In terms of number of productions, however, film accounted for the majority: `r 100 - film_hetv_production_revised_data$hetv_percent`%.
 
 </div>
 
@@ -468,22 +488,18 @@ film_hetv_production_revised()
 
 </div>
 
-```{r}
-#| label: film-hetv-production-count-revised-percentage
-#| fig-width: 8
-#| fig-height: 6
-#| fig-align: center
-#| fig-dpi: 150
-#| eval: false
-
-film_hetv_production_revised_percentage()
-```
-
 ##
+
+```{r}
+#| label: film-production-count-revised-text
+
+category_select <- 'film'
+film_production_data = production_revised(return_type = 'data')
+```
 
 <div id="left">
 
-* 193 films were recorded as starting principal photography in the UK in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
+* `r film_production_data$latest_unrounded` films were recorded as starting principal photography in the UK in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
 
 </div>
 
@@ -527,9 +543,16 @@ production_breakdown_revised()
 
 ##
 
+```{r}
+#| label: hetv-production-count-revised-text
+
+category_select <- 'hetv'
+hetv_production_data = production_revised(return_type = 'data')
+```
+
 <div id="left">
 
-* 168 HETV programmes were recorded as starting principal photography in the UK in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
+* `r hetv_production_data$latest_unrounded` HETV programmes were recorded as starting principal photography in the UK in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
 
 </div>
 
@@ -552,7 +575,7 @@ production_revised()
 
 <div id="left">
 
-* HETV programme starts in the 12 months to September 2025 included 14 feature-length single episode productions.
+* HETV programme starts in the 12 months to September 2025 included 13 feature-length single episode productions.
 <!-- * *Note:* INW and COP counts are combined for the 12 months to September 2021 for reasons of disclosure control.   -->
 
 </div>

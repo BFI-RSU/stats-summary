@@ -588,7 +588,7 @@ all_production_revised <- function(return_type = "plot") {
 }
 
 
-film_hetv_production_revised <- function() {
+film_hetv_production_revised <- function(return_type = "plot") {
   # Mappings
   metric_display_names <- c(
     UK_spend_m = "spend, £ million",
@@ -614,6 +614,24 @@ film_hetv_production_revised <- function() {
     slice_max(release_id, n = 1) %>%
     ungroup()
 
+  if (return_type == "data") {
+    # Calculate values for text
+    hetv_value <- df_filtered %>%
+      filter(year == data_and_vars$latest_year) %>%
+      filter(category == 'hetv') %>%
+      pull(metric)
+
+    film_value <- df_filtered %>%
+      filter(year == data_and_vars$latest_year) %>%
+      filter(category == 'film') %>%
+      pull(metric)
+
+    return(list(
+      hetv_percent = round(hetv_value / (hetv_value + film_value) * 100, 0)
+    ))
+  }  
+
+  # Return plot (default)
   ggplot(df_filtered, aes(x = label, y = .data[[metric]], fill = category)) +
     geom_bar(stat = 'identity') +  
     geom_text(aes(label = scales::comma(round(.data[[metric]], 0))), 
@@ -693,7 +711,7 @@ film_hetv_production_revised_percentage <- function() {
 }
 
 
-production_revised <- function() {
+production_revised <- function(return_type = "plot") {
   # Mappings
   metric_display_names <- c(
     UK_spend_m = "spend, £ million",
@@ -732,6 +750,26 @@ production_revised <- function() {
     slice_max(release_id, n = 1) %>%
     ungroup()
 
+  if (return_type == "data") {
+    # Calculate values for text
+    latest <- df_filtered %>%
+      filter(year == data_and_vars$latest_year) %>%
+      pull(metric)
+
+    prev_year <- df_filtered %>%
+      filter(year == data_and_vars$latest_year - 1) %>%
+      pull(metric)
+
+    pct_change_prev <- round(((latest - prev_year) / prev_year) * 100)
+
+    return(list(
+      latest = round(latest / 1000, 2),
+      latest_unrounded = latest,
+      pct_change_prev = pct_change_prev
+    ))
+  }  
+
+  # Return plot (default)
   ggplot(df_filtered, aes(x = label, y = .data[[metric]])) +
     geom_bar(stat = 'identity', , fill = category_colour) +  
     geom_text(aes(label = scales::comma(round(.data[[metric]], 0)), 
