@@ -895,6 +895,156 @@ production_breakdown_revised <- function() {
 }
 
 
+production_line_facet <- function(return_type = "plot") {
+  # Mappings
+  metric_display_names <- c(
+    UK_spend_m = "spend, £ million",
+    count = "count"
+  )
+
+  category_display_names <- c(
+    film = "Film",
+    hetv = "HETV"
+  )
+
+  category_colours <- c(
+    film = "#e50076",
+    hetv = "#1197FF"
+  )
+
+  metric_display <- metric_display_names[[metric]]
+  category_display <- category_display_names[[category_select]]
+  category_colour <- category_colours[[category_select]]
+
+  # Determine facet layout based on available production types
+  production_types_available <- unique(data_and_vars$data$production_type)
+  has_combined <- "inward_investment_and_co_production" %in% production_types_available
+  has_separate <- all(c("inward_investment", "co_production") %in% production_types_available)
+
+  if (has_combined && !has_separate) {
+    facet_types <- c("all", "domestic_uk", "inward_investment_and_co_production")
+    ncol_val <- 3
+  } else {
+    facet_types <- c("all", "inward_investment", "domestic_uk", "co_production")
+    ncol_val <- 2
+  }
+
+  # Production type display labels for facets
+  production_type_labels <- c(
+    "all" = "ALL",
+    "inward_investment" = "INW",
+    "domestic_uk" = "DOM",
+    "co_production" = "COP",
+    "inward_investment_and_co_production" = "INW+COP"
+  )
+
+  # Filter and prepare data
+  df <- data_and_vars$data %>%
+    filter(category == category_select) %>%
+    filter(production_type %in% facet_types) %>%
+    filter(quarter == data_and_vars$latest_quarter) %>%
+    filter(year >= data_and_vars$latest_year - 4 & year <= data_and_vars$latest_year) %>%
+    mutate(production_type = factor(production_type, levels = facet_types))
+
+  df_first <- df %>%
+    filter(status == 'first_reported') %>%
+    group_by(production_type) %>%
+    mutate(label = factor(label, levels = unique(label[order(year, month_num)]))) %>%
+    ungroup()
+
+  df_revised <- df %>%
+    filter(status == 'revised') %>%
+    group_by(production_type) %>%
+    mutate(label = factor(label, levels = unique(label[order(year, month_num)]))) %>%
+    slice_max(release_id, n = 1) %>% # keep only 'revised' data with latest 'release_id'
+    ungroup()
+
+  # Get ordered labels for x-axis breaks (every 2 years)
+  all_labels <- levels(df_first$label)
+  breaks <- all_labels[seq(1, length(all_labels), by = 2)]
+
+  # Create connector line from last revised to last first_reported
+  df_revised_last <- df_revised %>%
+    group_by(production_type) %>%
+    slice_max(year, n = 1) %>%
+    ungroup()
+
+  df_first_last <- df_first %>%
+    group_by(production_type) %>%
+    slice_max(year, n = 1) %>%
+    ungroup()
+
+  df_connector <- bind_rows(
+    df_revised_last %>% select(label, production_type, y = .data[[metric]]),
+    df_first_last %>% select(label, production_type, y = .data[[metric]])
+  )
+
+  if (return_type == "data") {
+    first_latest <- df_first %>%
+      filter(year == data_and_vars$latest_year) %>%
+      summarise(total = sum(.data[[metric]], na.rm = TRUE)) %>%
+      pull(total)
+
+    first_prev <- df_first %>%
+      filter(year == data_and_vars$latest_year - 1) %>%
+      summarise(total = sum(.data[[metric]], na.rm = TRUE)) %>%
+      pull(total)
+
+    revised_latest <- df_revised %>%
+      filter(year == data_and_vars$latest_year) %>%
+      summarise(total = sum(.data[[metric]], na.rm = TRUE)) %>%
+      pull(total)
+
+    revised_prev <- df_revised %>%
+      filter(year == data_and_vars$latest_year - 1) %>%
+      summarise(total = sum(.data[[metric]], na.rm = TRUE)) %>%
+      pull(total)
+
+    first_pct_change <- if (first_prev > 0) round(((first_latest - first_prev) / first_prev) * 100) else NA_real_
+    revised_pct_change <- if (revised_prev > 0) round(((revised_latest - revised_prev) / revised_prev) * 100) else NA_real_
+
+    return(list(
+      first_latest = round(first_latest / 1000, 2),
+      first_pct_change = first_pct_change,
+      revised_latest = round(revised_latest / 1000, 2),
+      revised_pct_change = revised_pct_change
+    ))
+  }
+
+  # Return plot (default)
+  ggplot() +
+    geom_line(data = df_first, aes(x = label, y = .data[[metric]], group = 1),
+              colour = "#783df6", linewidth = 1) +
+    geom_point(data = df_first, aes(x = label, y = .data[[metric]]),
+               colour = "#783df6", size = 2) +
+    geom_line(data = df_revised, aes(x = label, y = .data[[metric]], group = 1),
+              colour = "darkgrey", linewidth = 1) +
+    geom_point(data = df_revised, aes(x = label, y = .data[[metric]]),
+               colour = "darkgrey", size = 2) +
+    geom_line(data = df_connector,
+              aes(x = label, y = y, group = production_type),
+              colour = "darkgrey", linetype = "dashed", linewidth = 0.8) +
+    facet_wrap(~production_type, scales = "free_y", ncol = ncol_val,
+               labeller = labeller(production_type = production_type_labels)) +
+    labs(
+      title = paste0("UK production ", metric_display, ", in the year ending (YE) ", data_and_vars$latest_month),
+      subtitle = paste0(category_display, " projects starting principal photography, ",
+                        "<span style='color:#783df6'>**first reported**</span> and ",
+                        "<span style='color:darkgrey'>**revised**</span> data"),
+      x = '',
+      y = ''
+    ) +
+    scale_x_discrete(breaks = breaks) +
+    scale_y_continuous(labels = scales::comma_format(), limits = c(0, NA)) +
+    theme_minimal() +
+    theme(
+      legend.position = 'none',
+      plot.subtitle = element_textbox_simple(),
+      strip.text = element_text(face = "bold")
+    )
+}
+
+
 # Certification
 
 certification <- function(return_type = "plot") {

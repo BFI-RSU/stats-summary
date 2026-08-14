@@ -320,8 +320,9 @@ production_revised()
 
 <div id="left">
 
-The BFI assigns productions to one of three categories:
+These graphs plot first reported data against revised data for:
 
+* All productions (ALL)
 * Inward investment features (INW)
 * Domestic UK features (DOM)
 * Co-productions (COP)
@@ -340,7 +341,7 @@ See [notes to statistics releases](https://www.bfi.org.uk/industry-data-insights
 #| fig-dpi: 150
 
 category_select <- 'film'
-production_breakdown_revised()
+production_line_facet()
 ```
 
 </div>
@@ -379,7 +380,7 @@ production_revised()
 <div id="left">
 
 * Spend on co-productions almost doubled compared with revised figures for the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year - 1`.
-<!-- * *Note:* INW and COP spend is combined for the 12 months to September 2021 for reasons of disclosure control.  -->
+* *Note:* Individual spend figures for INW and COP are not reported for the 12 months to `r data_and_vars$latest_month` 2022 for reasons of disclosure control. 
 
 </div>
 
@@ -393,7 +394,7 @@ production_revised()
 #| fig-dpi: 150
 
 category_select <- 'hetv'
-production_breakdown_revised()
+production_line_facet()
 ```
 
 </div>
@@ -536,7 +537,7 @@ production_revised()
 #| fig-dpi: 150
 
 category_select <- 'film'
-production_breakdown_revised()
+production_line_facet()
 ```
 
 </div>
@@ -576,7 +577,7 @@ production_revised()
 <div id="left">
 
 * HETV programme starts in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` included 13 feature-length single episode productions.
-<!-- * *Note:* INW and COP counts are combined for the 12 months to September 2021 for reasons of disclosure control.   -->
+* *Note:* Individual counts for INW and COP are not reported for the 12 months to `r data_and_vars$latest_month` 2022 for reasons of disclosure control. 
 
 </div>
 
@@ -590,7 +591,7 @@ production_revised()
 #| fig-dpi: 150
 
 category_select <- 'hetv'
-production_breakdown_revised()
+production_line_facet()
 ```
 
 </div>
