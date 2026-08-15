@@ -320,9 +320,8 @@ production_revised()
 
 <div id="left">
 
-These graphs plot first reported data against revised data for:
+The BFI assigns productions to one of three categories:
 
-* All productions (ALL)
 * Inward investment features (INW)
 * Domestic UK features (DOM)
 * Co-productions (COP)
@@ -335,6 +334,29 @@ See [notes to statistics releases](https://www.bfi.org.uk/industry-data-insights
 
 ```{r}
 #| label: film-production-breakdown-revised
+#| fig-width: 8
+#| fig-height: 6
+#| fig-align: center
+#| fig-dpi: 150
+
+category_select <- 'film'
+production_breakdown_revised()
+```
+
+</div>
+
+##
+
+<div id="left">
+
+* These graphs plot first reported data against revised data for all productions (ALL) and INW, DOM and COP projects.
+
+</div>
+
+<div id="right">
+
+```{r}
+#| label: film-production-facet
 #| fig-width: 8
 #| fig-height: 6
 #| fig-align: center
@@ -380,7 +402,6 @@ production_revised()
 <div id="left">
 
 * Spend on co-productions almost doubled compared with revised figures for the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year - 1`.
-* *Note:* Individual spend figures for INW and COP are not reported for the 12 months to `r data_and_vars$latest_month` 2022 for reasons of disclosure control. 
 
 </div>
 
@@ -388,6 +409,29 @@ production_revised()
 
 ```{r}
 #| label: hetv-production-breakdown-revised
+#| fig-width: 8
+#| fig-height: 6
+#| fig-align: center
+#| fig-dpi: 150
+
+category_select <- 'hetv'
+production_breakdown_revised()
+```
+
+</div>
+
+##
+
+<div id="left">
+
+* *Note:* Individual spend figures for first reported INW and COP projects are not shown for the 12 months to `r data_and_vars$latest_month` 2022 for reasons of disclosure control. 
+
+</div>
+
+<div id="right">
+
+```{r}
+#| label: hetv-production-facet
 #| fig-width: 8
 #| fig-height: 6
 #| fig-align: center
@@ -537,6 +581,29 @@ production_revised()
 #| fig-dpi: 150
 
 category_select <- 'film'
+production_breakdown_revised()
+```
+
+</div>
+
+##
+
+<div id="left">
+
+* This lag can be clearly seen in these graphs, which compare first reported project counts to revised project counts across all categories of production.
+
+</div>
+
+<div id="right">
+
+```{r}
+#| label: film-production-count-facet
+#| fig-width: 8
+#| fig-height: 6
+#| fig-align: center
+#| fig-dpi: 150
+
+category_select <- 'film'
 production_line_facet()
 ```
 
@@ -577,7 +644,6 @@ production_revised()
 <div id="left">
 
 * HETV programme starts in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` included 13 feature-length single episode productions.
-* *Note:* Individual counts for INW and COP are not reported for the 12 months to `r data_and_vars$latest_month` 2022 for reasons of disclosure control. 
 
 </div>
 
@@ -585,6 +651,29 @@ production_revised()
 
 ```{r}
 #| label: hetv-production-count-breakdown-revised
+#| fig-width: 8
+#| fig-height: 6
+#| fig-align: center
+#| fig-dpi: 150
+
+category_select <- 'hetv'
+production_breakdown_revised()
+```
+
+</div>
+
+##
+
+<div id="left">
+
+* *Note:* Individual counts for first reported INW and COP projects are not reported for the 12 months to `r data_and_vars$latest_month` 2022 for reasons of disclosure control. 
+
+</div>
+
+<div id="right">
+
+```{r}
+#| label: hetv-production-count-facet
 #| fig-width: 8
 #| fig-height: 6
 #| fig-align: center
