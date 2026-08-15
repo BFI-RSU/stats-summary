@@ -895,7 +895,7 @@ production_breakdown_revised <- function() {
 }
 
 
-production_line_facet <- function(return_type = "plot") {
+production_line_facet <- function(scales_setting = "free_y", return_type = "plot") {
   # Mappings
   metric_display_names <- c(
     UK_spend_m = "spend, £ million",
@@ -1024,7 +1024,7 @@ production_line_facet <- function(return_type = "plot") {
     geom_line(data = df_connector,
               aes(x = label, y = y, group = production_type),
               colour = "darkgrey", linetype = "dashed", linewidth = 0.8) +
-    facet_wrap(~production_type, scales = "free_y", ncol = ncol_val,
+    facet_wrap(~production_type, scales = scales_setting, ncol = ncol_val,
                labeller = labeller(production_type = production_type_labels)) +
     labs(
       title = paste0("UK production ", metric_display, ", in the year ending (YE) ", data_and_vars$latest_month),

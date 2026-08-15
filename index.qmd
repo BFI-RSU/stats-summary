@@ -350,6 +350,7 @@ production_breakdown_revised()
 <div id="left">
 
 * These graphs plot first reported data against revised data for all productions (ALL) and INW, DOM and COP projects.
+* *Note:* Scales on the vertical axes vary by panel to preserve detail within each production category. Panels are not directly comparable by eye — check axis labels.
 
 </div>
 
@@ -424,7 +425,8 @@ production_breakdown_revised()
 
 <div id="left">
 
-* *Note:* Individual spend figures for first reported INW and COP projects are not shown for the 12 months to `r data_and_vars$latest_month` 2022 for reasons of disclosure control. 
+* Individual spend figures for first reported INW and COP projects are not shown for the 12 months to `r data_and_vars$latest_month` 2022 for reasons of disclosure control.
+* *Note:* Scales on the vertical axes vary by panel to preserve detail within each production category. Panels are not directly comparable by eye — check axis labels.
 
 </div>
 
@@ -590,7 +592,7 @@ production_breakdown_revised()
 
 <div id="left">
 
-* This lag can be clearly seen in these graphs, which compare first reported project counts to revised project counts across all categories of production.
+* The lag affecting DOM projects can be clearly seen in these graphs, which compare first reported project counts to revised project counts across all categories of production.
 
 </div>
 
@@ -604,7 +606,7 @@ production_breakdown_revised()
 #| fig-dpi: 150
 
 category_select <- 'film'
-production_line_facet()
+production_line_facet(scales_setting = "fixed")
 ```
 
 </div>
@@ -666,7 +668,7 @@ production_breakdown_revised()
 
 <div id="left">
 
-* *Note:* Individual counts for first reported INW and COP projects are not reported for the 12 months to `r data_and_vars$latest_month` 2022 for reasons of disclosure control. 
+* Individual counts for first reported INW and COP projects are not reported for the 12 months to `r data_and_vars$latest_month` 2022 for reasons of disclosure control. 
 
 </div>
 
@@ -680,7 +682,7 @@ production_breakdown_revised()
 #| fig-dpi: 150
 
 category_select <- 'hetv'
-production_line_facet()
+production_line_facet(scales_setting = "fixed")
 ```
 
 </div>
