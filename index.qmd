@@ -112,7 +112,7 @@ uk_admissions_month_data <- uk_admissions_month(return_type = "data")
 <div id="left">
 
 * `r uk_admissions_month_data$max_month` recorded `r data_and_vars$latest_period` `r data_and_vars$latest_year`'s highest monthly admissions, at `r round(uk_admissions_month_data$max_month_admissions, 0)` million.
-* *The Housemaid*, *Avatar: Fire & Ash* and *Hamnet* were the highest earning releases of that month.
+* *The Devil Wears Prada 2*, *Michael*, *Obsession* and *Backrooms* were among the highest earning releases of that month.
 
 </div>
 
