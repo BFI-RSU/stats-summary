@@ -1,5 +1,5 @@
 ---
-title: Screen sector statistics to March 2026
+title: Screen sector statistics to June 2026
 author: BFI Research and Statistics Unit
 date: last-modified
 date-format: long
@@ -25,6 +25,12 @@ embed-resources: false
 #| label: set-file-path
 
 file_path <- here::here('data/bfi_stats_release_data.xlsx')
+```
+
+```{r}
+#| label: set-release-id
+
+release_id_select <- 22026
 ```
 
 # UK box office and admissions {background-color="#e50076"}
@@ -171,8 +177,8 @@ uk_market_share_percent_data = uk_market_share_percent(return_type = 'data')
 
 <div id="left">
 
-* The total market share of all UK qualifying films was `r uk_market_share_percent_data$all_uk_qualifying`%, approximately `r abs(uk_market_share_percent_data$all_pt_change_prev)` percentage `r ifelse(uk_market_share_percent_data$all_pt_change_prev > 1, "points", "point")` `r ifelse(uk_market_share_percent_data$all_pt_change_prev >= 0, "higher", "down")` than `r data_and_vars$latest_period` `r data_and_vars$latest_year - 1`’s UK qualifying share.
-<!-- * *Note*: 2025 figures in chart sum to 44% due to rounding. -->
+* The total market share of all UK qualifying films was `r round(uk_market_share_percent_data$all_uk_qualifying,0)`%, which is around `r abs(uk_market_share_percent_data$all_pt_change_prev)` percentage `r ifelse(abs(uk_market_share_percent_data$all_pt_change_prev) > 1, "points", "point")` `r ifelse(uk_market_share_percent_data$all_pt_change_prev >= 0, "higher", "lower")` than `r data_and_vars$latest_period` `r data_and_vars$latest_year - 1`’s UK qualifying share.
+* *Note*: Figures in chart may not sum to quoted value due to rounding.
 
 </div>
 
@@ -347,6 +353,30 @@ production_breakdown_revised()
 
 ##
 
+<div id="left">
+
+* These graphs plot first reported data against revised data for all productions (ALL) and INW, DOM and COP projects.
+* *Note:* Scales on the vertical axes vary by panel to preserve detail within each production category. Panels are not directly comparable by eye — check axis labels.
+
+</div>
+
+<div id="right">
+
+```{r}
+#| label: film-production-facet
+#| fig-width: 8
+#| fig-height: 6
+#| fig-align: center
+#| fig-dpi: 150
+
+category_select <- 'film'
+production_line_facet()
+```
+
+</div>
+
+##
+
 ```{r}
 #| label: hetv-production-revised-text
 
@@ -379,7 +409,6 @@ production_revised()
 <div id="left">
 
 * Spend on co-productions almost doubled compared with revised figures for the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year - 1`.
-<!-- * *Note:* INW and COP spend is combined for the 12 months to September 2021 for reasons of disclosure control.  -->
 
 </div>
 
@@ -394,6 +423,30 @@ production_revised()
 
 category_select <- 'hetv'
 production_breakdown_revised()
+```
+
+</div>
+
+##
+
+<div id="left">
+
+* Individual spend figures for first reported INW and COP projects are not shown for the 12 months to `r data_and_vars$latest_month` 2022 and 2023 for reasons of disclosure control.
+* *Note:* Scales on the vertical axes vary by panel to preserve detail within each production category. Panels are not directly comparable by eye — check axis labels.
+
+</div>
+
+<div id="right">
+
+```{r}
+#| label: hetv-production-facet
+#| fig-width: 8
+#| fig-height: 6
+#| fig-align: center
+#| fig-dpi: 150
+
+category_select <- 'hetv'
+production_line_facet()
 ```
 
 </div>
@@ -543,6 +596,29 @@ production_breakdown_revised()
 
 ##
 
+<div id="left">
+
+* The lag affecting DOM projects can be clearly seen in these graphs, which compare first reported project counts to revised project counts across all categories of production.
+
+</div>
+
+<div id="right">
+
+```{r}
+#| label: film-production-count-facet
+#| fig-width: 8
+#| fig-height: 6
+#| fig-align: center
+#| fig-dpi: 150
+
+category_select <- 'film'
+production_line_facet(scales_setting = "fixed")
+```
+
+</div>
+
+##
+
 ```{r}
 #| label: hetv-production-count-revised-text
 
@@ -575,8 +651,7 @@ production_revised()
 
 <div id="left">
 
-* HETV programme starts in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` included 13 feature-length single episode productions.
-<!-- * *Note:* INW and COP counts are combined for the 12 months to September 2021 for reasons of disclosure control.   -->
+* HETV programme starts in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year` included 11 feature-length single episode productions.
 
 </div>
 
@@ -591,6 +666,29 @@ production_revised()
 
 category_select <- 'hetv'
 production_breakdown_revised()
+```
+
+</div>
+
+##
+
+<div id="left">
+
+* Individual counts for first reported INW and COP projects are not reported for the 12 months to `r data_and_vars$latest_month` 2022 and 2023 for reasons of disclosure control. 
+
+</div>
+
+<div id="right">
+
+```{r}
+#| label: hetv-production-count-facet
+#| fig-width: 8
+#| fig-height: 6
+#| fig-align: center
+#| fig-dpi: 150
+
+category_select <- 'hetv'
+production_line_facet(scales_setting = "fixed")
 ```
 
 </div>
@@ -689,7 +787,7 @@ hetv_cert_data = certification(return_type = 'data')
 <div id="left">
 
 * `r hetv_cert_data$latest_unrounded` HETV titles received final certification through the cultural test in the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year`.
-* There were two co-productions with final certification but details are not included for disclosure control reasons.
+* There were three co-productions with final certification but details are not included for disclosure control reasons.
 
 </div>
 
@@ -937,7 +1035,7 @@ certification()
 
 # Sources {background-color="#e50076"}
 
-* Box office: Comscore, BFI Research & Statistics Unit
+* Box office: Rentrak, BFI Research & Statistics Unit
 * Admissions: Cinema Advertising Association
 * Production: BFI Research & Statistics Unit
 * Certification: BFI Research & Statistics Unit, BFI Certification Unit 
