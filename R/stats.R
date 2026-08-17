@@ -1076,7 +1076,7 @@ certification <- function(return_type = "plot") {
 
   df <- data_and_vars$data %>%
     filter(quarter == data_and_vars$latest_quarter) %>%
-    group_by(year, label) %>%
+    filter(release_id == release_id_select) %>%
     ungroup()
 
   df_filtered <- df %>%
