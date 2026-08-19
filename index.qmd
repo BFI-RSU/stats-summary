@@ -356,7 +356,7 @@ production_breakdown_revised()
 <div id="left">
 
 * These graphs plot first reported data against revised data for all productions (ALL) and INW, DOM and COP projects.
-* *Note:* Scales on the vertical axes vary by panel to preserve detail within each production category. Panels are not directly comparable by eye — check axis labels.
+* *Note:* Scales on the vertical axes vary by panel to preserve detail within each production category. Panels are not directly comparable by eye -- check axis labels.
 
 </div>
 
@@ -408,7 +408,7 @@ production_revised()
 
 <div id="left">
 
-* Spend on co-productions almost doubled compared with revised figures for the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year - 1`.
+* Spend on co-productions more than doubled compared with revised figures for the 12 months to `r data_and_vars$latest_month` `r data_and_vars$latest_year - 1`.
 
 </div>
 
@@ -432,7 +432,7 @@ production_breakdown_revised()
 <div id="left">
 
 * Individual spend figures for first reported INW and COP projects are not shown for the 12 months to `r data_and_vars$latest_month` 2022 and 2023 for reasons of disclosure control.
-* *Note:* Scales on the vertical axes vary by panel to preserve detail within each production category. Panels are not directly comparable by eye — check axis labels.
+* *Note:* Scales on the vertical axes vary by panel to preserve detail within each production category. Panels are not directly comparable by eye -- check axis labels.
 
 </div>
 
@@ -1036,7 +1036,7 @@ certification()
 # Sources {background-color="#e50076"}
 
 * Box office: Rentrak, BFI Research & Statistics Unit
-* Admissions: Cinema Advertising Association
+* Admissions: UK Cinema Association
 * Production: BFI Research & Statistics Unit
 * Certification: BFI Research & Statistics Unit, BFI Certification Unit 
 
