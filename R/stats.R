@@ -280,7 +280,7 @@ uk_market_share_percent <- function(return_type = "plot") {
       filter(film_type == "all_uk_qualifying") %>%
       pull(market_share_percent)
     
-    all_pt_change_prev <- round(all_uk_qualifying_latest - all_uk_qualifying_prev_year)
+    all_pt_change_prev <- round(all_uk_qualifying_latest - all_uk_qualifying_prev_year,1)
     
     return(list(
       uk_indie = uk_indie_latest,
